@@ -1,0 +1,103 @@
+swagger: "2.0"
+info:
+  description: Access System
+  version: 1.0.0
+  title:  Acesso
+basePath: /access/api
+tags:
+  - name:  Access System
+
+
+paths:
+  /connect/token:
+    post:
+      tags:
+        - Autenticação
+      summary: verifica as credenciais do usário e retorna um token caso sejam válidas
+      consumes:
+        - "application/json; charset=UTF-8"
+      parameters:
+
+        - in: body
+          name: credenciais
+          required: true
+          description: Credenciais do usuário para solicitar o token JWT
+          schema:
+            $ref: '#/definitions/Credentials'
+
+      responses:
+        200:
+          description: Quando as credenciais são válidas e um token JWT é retornado.
+          schema:
+            $ref: '#/definitions/JWT'
+        403:
+          description: Quando as credenciais apresentadas são inválidas.
+
+  /connect/validate:
+    post:
+      tags:
+        - Validation
+      summary: valida o token
+      consumes:
+        - "application/json; charset=UTF-8"
+      produces:
+        - "application/json; charset=UTF-8"
+      parameters:
+        - in: body
+          name: JWT
+          required: true
+          description: Token para ser validado (em base 64)
+          schema:
+            $ref: '#/definitions/B64Token'
+
+      responses:
+        200:
+          description: A requisição foi recebida com sucesso.
+          schema:
+            $ref: '#/definitions/Valid'
+        401:
+          description: JWT inválido ou expirado.
+
+securityDefinitions:
+  autenticador_sp_gov_br:
+    type: oauth2
+    tokenUrl: http://localhost:8080/hello-authentication/api/auth/connect/token
+    flow: application
+  api_key:
+    type: apiKey
+    name: api_key
+    in: header
+
+definitions:
+
+  Credentials:
+    type: object
+    properties:
+      password:
+        type: string
+      scope:
+        type: string
+
+  JWT:
+    type: object
+    properties:
+      access_token:
+        type: string
+      expires_in:
+        type: string
+      token_type:
+        type: string
+
+  B64Token:
+    type: object
+    properties:
+      token:
+        type: string
+
+  Valid:
+    type: object
+    properties:
+      valid:
+        type: boolean
+      message:
+        type: string
