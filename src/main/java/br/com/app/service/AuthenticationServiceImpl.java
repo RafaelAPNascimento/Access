@@ -6,6 +6,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public boolean authenticate(Credentials credentials) {
-        return false;
+        return true;
     }
 }

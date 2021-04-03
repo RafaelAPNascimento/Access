@@ -15,7 +15,7 @@ import java.security.cert.CertificateFactory;
 public class ConfigCertificate {
 
     private static final Path TEST_TRUST_STORE;
-    private static final String LOCAL_HOST_CERTIFICATE = "localhost";
+    private static final String LOCAL_HOST_CERTIFICATE = "localhost.cer";
 
     static {
 
@@ -46,7 +46,7 @@ public class ConfigCertificate {
 
     private static void loadCertificate(Path certificate) throws CertificateException, NoSuchAlgorithmException, IOException, KeyStoreException {
 
-        String alias = "localhost";
+        String alias = "localhost.cer";
         String password = "changeit";
 
         if (!Files.exists(TEST_TRUST_STORE)) {
